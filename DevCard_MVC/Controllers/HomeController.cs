@@ -7,15 +7,20 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DevCard_MVC.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController()
+        private readonly List<Service> _services = new()
         {
+            new Service(1 , "نقره ای"),
+            new Service(2, "طلایی"),
+            new Service(1 , "پلاتین"),
+            new Service(1 , " الماس"),
             
-        }
+        };
 
         public IActionResult Index()
         {
@@ -26,13 +31,31 @@ namespace DevCard_MVC.Controllers
         [HttpGet]
         public IActionResult Contact()
         {
-            return View();
+            var model = new Contact
+            {
+                Services = new SelectList(_services , "Id" , "Name")
+            };
+            return View(model);
         }
 
         [HttpPost]
         public IActionResult Contact(Contact model)
         {
-            return Json(Ok());
+            
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Error = "اطلاعات وارد شده صحیح نیست . لطفا دوباره تلاش کنید";
+                return View(model);
+            }
+            
+            model = new Contact()
+            {
+                Services = new SelectList(_services, "Id", "Name")
+            };
+
+            ViewBag.Success = "اطلاعات با موفقیت ارسال شد.";
+            ModelState.Clear();
+            return View(model);
         }
 
 

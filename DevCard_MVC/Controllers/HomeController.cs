@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace DevCard_MVC.Controllers
 {
@@ -21,10 +22,22 @@ namespace DevCard_MVC.Controllers
             return View();
         }
 
+
+        [HttpGet]
         public IActionResult Contact()
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Contact(Contact model)
+        {
+            return Json(Ok());
+        }
+
+
+
+        
 
 
 
